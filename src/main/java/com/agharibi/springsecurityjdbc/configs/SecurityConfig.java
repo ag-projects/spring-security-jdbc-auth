@@ -24,7 +24,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.jdbcAuthentication().dataSource(dataSource);
+        
+        /**
+         * If the users and authorities tables are not default
+         * and name differently in your domain
+         * The use the following queries
+         */
+
+        auth.jdbcAuthentication()
+            .dataSource(dataSource)
+            .usersByUsernameQuery("SELECT username, password, enabled FROM app_users WHERE username= ?")
+            .authoritiesByUsernameQuery("SELECT username, authority FROM app_authorities WHERE username= ?");
     }
 
     /**
